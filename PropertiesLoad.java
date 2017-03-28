@@ -9,7 +9,7 @@ public class PropertiesLoad {
 	public static float overDayFee;
 
 	static {
-		// 使用类加载器加载
+		// 浣跨敤绫诲姞杞藉櫒鍔犺浇
 		InputStream in = null;
 		Properties pros = new Properties();
 		try {
@@ -27,7 +27,13 @@ public class PropertiesLoad {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally{
-			in.close();
+			if(in != null){
+			   try{
+			   	in.close();
+			   }catch(IOException e){
+			   	e.printStackTrace();
+			   }
+			}
 		}
 	}
 }
