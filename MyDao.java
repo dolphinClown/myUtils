@@ -15,7 +15,7 @@ import cn.edu.xauat.computer.utils.JDBCUtils;
 
 public class Dao<T> {
 
-	// a. insert,update,delete ²Ù×÷
+	// a. insert,update,delete æ“ä½œ
 	public void update(String sql, Object... args) {
 
 		Connection connection = null;
@@ -38,7 +38,7 @@ public class Dao<T> {
 		}
 	}
 
-	// b. ²éÑ¯Ò»Ìõ¼ÇÂ¼£¬·µ»Ø¶ÔÓ¦µÄ¶ÔÏó
+	// b. æŸ¥è¯¢ä¸€æ¡è®°å½•ï¼Œè¿”å›å¯¹åº”çš„å¯¹è±¡
 	public <T> T get(Class<T> clazz, String sql, Object... args) {
 
 		List<T> list = getForList(clazz, sql, args);
@@ -48,16 +48,16 @@ public class Dao<T> {
 		return null;
 	}
 
-	//c. ·µ»ØÄ³Ìõ¼ÇÂ¼µÄÄ³Ò»¸ö×Ö¶ÎµÄÖµ »ò Ò»¸öÍ³¼ÆµÄÖµ£¨Ò»¹²¶ÔÉÙÌõ¼ÇÂ¼£©
+	//c. è¿”å›æŸæ¡è®°å½•çš„æŸä¸€ä¸ªå­—æ®µçš„å€¼ æˆ– ä¸€ä¸ªç»Ÿè®¡çš„å€¼ï¼ˆä¸€å…±å¤šå°‘æ¡è®°å½•ï¼‰
 	public <E> E getForValue(String sql, Object... args) {
 
-		// µÃµ½½á¹û¼¯£º¸Ã½á¹û¼¯Ó¦¸ÃÖ»ÓĞÒ»ĞĞ£¬ÇÒÖ»ÓĞÒ»ÁĞ
+		// å¾—åˆ°ç»“æœé›†ï¼šè¯¥ç»“æœé›†åº”è¯¥åªæœ‰ä¸€è¡Œï¼Œä¸”åªæœ‰ä¸€åˆ—
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
-			// µÃµ½½á¹û¼¯
+			// å¾—åˆ°ç»“æœé›†
 			connection = JDBCUtils.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			for (int i = 0; i < args.length; i++) {
@@ -78,7 +78,7 @@ public class Dao<T> {
 		return null;
 	}
 
-	// d. ²éÑ¯¶àÌõ¼ÇÂ¼£¬·µ»Ø¶ÔÓ¦µÄ¶ÔÏóµÄ¼¯ºÏ
+	// d. æŸ¥è¯¢å¤šæ¡è®°å½•ï¼Œè¿”å›å¯¹åº”çš„å¯¹è±¡çš„é›†åˆ
 	public <T> List<T> getForList(Class<T> clazz, String sql, Object... args) {
 
 		List<T> list = new ArrayList<T>();
@@ -88,7 +88,7 @@ public class Dao<T> {
 		ResultSet resultSet = null;
 
 		try {
-			// 1.µÃµ½½á¹û¼¯
+			// 1.å¾—åˆ°ç»“æœé›†
 			connection = JDBCUtils.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -97,11 +97,11 @@ public class Dao<T> {
 			}
 
 			resultSet = preparedStatement.executeQuery();
-			// 2.´¦Àí½á¹û¼¯£¬µÃµ½MapµÄList£¬ÆäÖĞÒ»¸öMap¶ÔÏó¾ÍÊÇÒ»Ìõ¼ÇÂ¼
+			// 2.å¤„ç†ç»“æœé›†ï¼Œå¾—åˆ°Mapçš„Listï¼Œå…¶ä¸­ä¸€ä¸ªMapå¯¹è±¡å°±æ˜¯ä¸€æ¡è®°å½•
 			List<Map<String, Object>> values = handleResultSetToMapList(resultSet);
 
-			// 3.°ÑMapµÄList×ªÎªclazz¶ÔÓ¦µÄList,ÆäÖĞMapµÄKey¼´Îªclazz
-			// ¶ÔÓ¦µÄ¶ÔÏóµÄpropertyName,MapµÄvalue¼´Îªclazz¶ÔÓ¦µÄ¶ÔÏóµÄpropertyValue
+			// 3.æŠŠMapçš„Listè½¬ä¸ºclazzå¯¹åº”çš„List,å…¶ä¸­Mapçš„Keyå³ä¸ºclazz
+			// å¯¹åº”çš„å¯¹è±¡çš„propertyName,Mapçš„valueå³ä¸ºclazzå¯¹åº”çš„å¯¹è±¡çš„propertyValue
 			list = transferMapListToBeanList(clazz, values);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,20 +119,20 @@ public class Dao<T> {
 
 		List<T> result = new ArrayList<T>();
 		T bean = null;
-		// ÅĞ¶ÏlistÊÇ·ñÎª¿Õ¼¯ºÏ£¬Èô²»Îª¿Õ£¬±éÀúList£¬µÃµ½Ò»¸ö¸öMap¶ÔÏó£¬ÔÙ°ÑÒ»¸öMap¶ÔÏó×ªÎªÒ»¸öClass
-		// ²ÎÊıÀàĞÍµÄObject¶ÔÏó
+		// åˆ¤æ–­listæ˜¯å¦ä¸ºç©ºé›†åˆï¼Œè‹¥ä¸ä¸ºç©ºï¼Œéå†Listï¼Œå¾—åˆ°ä¸€ä¸ªä¸ªMapå¯¹è±¡ï¼Œå†æŠŠä¸€ä¸ªMapå¯¹è±¡è½¬ä¸ºä¸€ä¸ªClass
+		// å‚æ•°ç±»å‹çš„Objectå¯¹è±¡
 		if (values.size() > 0) {
 			for (Map<String, Object> m : values) {
-				// ´Ë´¦ÒªÊµÀı»¯
+				// æ­¤å¤„è¦å®ä¾‹åŒ–
 				bean = clazz.newInstance();
 				for (Map.Entry<String, Object> entry : m.entrySet()) {
 					String propertyName = entry.getKey();
 					Object value = entry.getValue();
 
-					// Ã»ÊµÀıclazz»¯»áÅ×³öjava.lang.IllegalArgumentException: No bean specified
+					// æ²¡å®ä¾‹clazzåŒ–ä¼šæŠ›å‡ºjava.lang.IllegalArgumentException: No bean specified
 					BeanUtils.setProperty(bean, propertyName, value);
 				}
-				//°ÑObject¶ÔÏó·ÅÈëµ½ListÖĞ
+				//æŠŠObjectå¯¹è±¡æ”¾å…¥åˆ°Listä¸­
 				result.add(bean);
 			}
 		}
@@ -142,12 +142,12 @@ public class Dao<T> {
 	private List<Map<String, Object>> handleResultSetToMapList(
 			ResultSet resultSet) throws SQLException {
 
-		// ×¼±¸Ò»¸öList<Map<String,Object>>Ò»¸öMap¶ÔÓ¦Ò»Ìõ¼ÇÂ¼
+		// å‡†å¤‡ä¸€ä¸ªList<Map<String,Object>>ä¸€ä¸ªMapå¯¹åº”ä¸€æ¡è®°å½•
 		List<Map<String, Object>> values = new ArrayList<Map<String, Object>>();
 		List<String> columnLabels = getColumnLabels(resultSet);
 		Map<String, Object> map = null;
 
-		// ´¦ÀíResultSet,Ê¹ÓÃwhileÑ­»·
+		// å¤„ç†ResultSet,ä½¿ç”¨whileå¾ªç¯
 		while (resultSet.next()) {
 			map = new HashMap<String, Object>();
 
@@ -155,14 +155,14 @@ public class Dao<T> {
 				Object value = resultSet.getObject(columnLabel);
 				map.put(columnLabel, value);
 			}
-			// °ÑÌî³äºÃµÄMap¶ÔÏó·ÅÈë×¼±¸ºÃµÄList
+			// æŠŠå¡«å……å¥½çš„Mapå¯¹è±¡æ”¾å…¥å‡†å¤‡å¥½çš„List
 			values.add(map);
 		}
 		return values;
 	}
 
 
-	// »ñÈ¡½á¹û¼¯µÄColumnLabel¶ÔÓ¦µÄList
+	// è·å–ç»“æœé›†çš„ColumnLabelå¯¹åº”çš„List
 	private List<String> getColumnLabels(ResultSet rs) throws SQLException {
 
 		List<String> labels = new ArrayList<String>();
